@@ -9,7 +9,6 @@ export const product2Slice = createSlice({
   initialState,
   reducers: {
     saveProducts2: (state, action) => {
-      console.log('action => ', action)
       return {
         ...state,
         products2: action.payload

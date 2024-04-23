@@ -5,13 +5,13 @@ const initialState = {
   products: [],
 }
 
-// export const getProducts = createAsyncThunk(
-//   'products/fetch_products',
-//   async () => {
-//     const response = await axios.get("https://dummyjson.com/products")
-//     return response?.data?.products
-//   }
-// )
+export const getProducts = createAsyncThunk(
+  'products/fetch_products',
+  async () => {
+    const response = await axios.get("https://dummyjson.com/products")
+    return response?.data?.products
+  }
+)
 
 // export const getProducts = async () => {
 //     const response = await axios.get("https://dummyjson.com/products")
@@ -30,15 +30,15 @@ export const productSlice = createSlice({
       }
     }
   },
-  // extraReducers: builder => {
-  //   builder
-  //     .addCase(getProducts.pending, (state, action) => {
-  //       state.status = 'loading'
-  //     })
-  //     .addCase(getProducts.fulfilled, (state, action) => {
-  //       state.products = action.payload
-  //     })
-  // }
+  extraReducers: builder => {
+    builder
+      .addCase(getProducts.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(getProducts.fulfilled, (state, action) => {
+        state.products = action.payload
+      })
+  }
 })
 
 // Action creators are generated for each case reducer function

@@ -1,12 +1,11 @@
-import { Outlet, Link, useLoaderData, useFetcher, useRouteLoaderData } from "react-router-dom";
+import { Outlet, Link, useLocation, Navigate, useLoaderData, useFetcher, useRouteLoaderData } from "react-router-dom";
 
 export function ProtectedLayout() {
-    // let { user } = useRouteLoaderData("root");
-    // let fetcher = useFetcher();
+    const location = useLocation();
+    const isLogged = false
 
-    // let isLoggingOut = fetcher.formData != null;
-
-    return (
+    return isLogged
+    ? (
         <div className="admin">
             <nav>
                 <ul>
@@ -26,4 +25,5 @@ export function ProtectedLayout() {
             </div>
         </div>
     )
+    : <Navigate to="/login" replace state={{ from: location }} />
 }
