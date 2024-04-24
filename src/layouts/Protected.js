@@ -1,8 +1,9 @@
 import { Outlet, Link, useLocation, Navigate, useLoaderData, useFetcher, useRouteLoaderData } from "react-router-dom";
+import { useSelector } from 'react-redux'
 
 export function ProtectedLayout() {
     const location = useLocation();
-    const isLogged = false
+    const isLogged = useSelector((state) => state?.user?.isLogged)
 
     return isLogged
     ? (
@@ -13,7 +14,7 @@ export function ProtectedLayout() {
                         <Link to="/admin/accounts">Tài khoản</Link>
                     </li>
                     <li>
-                        <Link to="/admin/products">Quản lý sản phẩm</Link>
+                        <Link to="/admin/product-management">Quản lý sản phẩm</Link>
                     </li>
                     <li>
                         <Link to="/admin/logout">Logout</Link>

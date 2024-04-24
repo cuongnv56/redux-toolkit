@@ -1,15 +1,8 @@
+import { lazy, Suspense } from "react";
 import {
-  Outlet,
-  Form,
   Link,
   createBrowserRouter,
   RouterProvider,
-  useNavigation,
-  useFetcher,
-  useLocation,
-  useActionData,
-  redirect,
-  useRouteLoaderData
 } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux'
 import { createAsyncThunk } from '@reduxjs/toolkit'
@@ -20,10 +13,14 @@ import logo from './logo.svg';
 import './App.css';
 import { PublicLayout } from "./layouts/Public"
 import { Home } from "./containers/Home"
-import { Product } from "./containers/Product"
+import { Product } from "./containers/Product/index"
+import { ListProductSave } from "./containers/Product/components/ListProductSave"
+import { ListProduct } from "./containers/Product/components/ListProduct"
+import { ProductDetail } from "./containers/Product/components/ProductDetail"
 import { ProtectedLayout } from "./layouts/Protected"
 import { Dashboard } from "./containers/Dashboard"
 import { fakeAuthProvider } from "./auth"
+import { ErrorBoundary } from "react-error-boundary";
 
 const router = createBrowserRouter([
   {
@@ -40,15 +37,52 @@ const router = createBrowserRouter([
       },
       // {
       //   path: "products",
-      //   lazy: () => import("./containers/Product"),
+      //   element: <Product />,
+      //   errorElement: <h1>Loi roi nha</h1>,
+      //   children: [
+      //     { index: true, element: <ListProduct /> },
+      //     { path: "save", element: <ListProductSave /> },
+      //     { path: ":id", element: <ProductDetail /> },
+      //   ],
       // },
       {
         path: "products",
+        // async lazy() {
+        //   let { ProductPage } = await import("./containers/Product/index")
+        //   return { Component: ProductPage }
+        // },
         element: <Product />,
         children: [
-          { path: ":id", element: <Invoice /> },
-          { path: "/pending", element: <Pending /> },
-          { path: "/complete", element: <Complete /> },
+          {
+            index: true,
+            async lazy() {
+              let { ListProduct } = await import("./containers/Product/components/ListProduct")
+              return { Component: ListProduct }
+            },
+          },
+          {
+            path: "save",
+            errorElement: <h1>Loi roi nha</h1>,
+            async lazy() {
+              let { ListProductSave } = await import(
+                "./containers/Product/components/ListProductSave"
+              );
+              return {
+                Component: ListProductSave,
+              };
+            },
+          },
+          {
+            path: ":id",
+            async lazy() {
+              let { ProductDetail } = await import(
+                "./containers/Product/components/ProductDetail"
+              );
+              return {
+                Component: ProductDetail,
+              };
+            },
+          },
         ],
       },
       {
@@ -68,6 +102,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
+      },
+      {
+        path: "accounts",
+        lazy: () => import("./containers/Accounts/index"),
+      },
+      {
+        path: "product-management",
+        lazy: () => import("./containers/Product/components/ProductManagement"),
       },
     ],
   },
@@ -140,6 +182,26 @@ function App() {
   // const callApiForSaga = () => {
   //   dispatch(saveProducts2())
   // }
+
+  const fallbackRender = ({ error, resetErrorBoundary }) => { 
+    return (
+      <div role="alert">
+        <p>Something went wrong:</p>
+        <pre style={{ color: "red" }}>{error.message}</pre>
+      </div>
+    );
+  }
+
+  return (
+    <ErrorBoundary 
+      fallbackRender={fallbackRender}
+      onReset={(details) => {
+        // Reset the state of your app so the error doesn't happen again
+      }}
+    >
+      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    </ErrorBoundary>
+  )
 
   return <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />;
 }
