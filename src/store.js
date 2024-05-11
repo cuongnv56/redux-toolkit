@@ -1,24 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
-import productReducer from './productSlice'
+// import productReducer from './productSlice'
 import rootReducer from "./rootReducer"
-import aboutReducer from "./aboutSlice"
-import userReducer from "./userSlice"
+// import aboutReducer from "./aboutSlice"
+// import userReducer from "./userSlice"
 import rootSaga from './sagas'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer, persistStore } from 'redux-persist'
 
 const sagaMiddleware = createSagaMiddleware()
 
-const persistConfig = {
-    key: 'user',
-    storage,
-}
+// const persistRootConfig = {
+//     key: 'root',
+//     storage,
+//     whitelist: ['user', 'about']
+// }
 
-const persistedReducer = persistReducer(persistConfig, userReducer)
+// const persistedReducer = persistReducer(persistRootConfig, rootReducer)
 
 const store = configureStore({
-    reducer: persistedReducer,
+    reducer: rootReducer,
+    // reducer: persistedReducer,
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({

@@ -11,13 +11,11 @@ export async function loader() {
 export function Component(props) {
   let data = useLoaderData()
   const dispatch = useDispatch()
-  // const isLogged = useSelector((state) => state?.user?.isLogged)
-  const isLogged = useSelector((state) => state?.isLogged)
+  const isLogged = useSelector((state) => state?.root?.user?.isLogged)
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(typeof isLogged)
     if (isLogged) {
       return navigate("/admin")
     }

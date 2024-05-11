@@ -5,7 +5,8 @@ import { logout } from "../userSlice";
 export function ProtectedLayout() {
     const location = useLocation();
     const dispatch = useDispatch()
-    const isLogged = useSelector((state) => state?.isLogged)
+    const userInfo = useSelector((state) => state?.root?.user)
+    const isLogged = userInfo?.isLogged
     
     const handleLogout = () => {
         dispatch(logout())
@@ -23,7 +24,7 @@ export function ProtectedLayout() {
                         <Link to="/admin/product-management">Quản lý sản phẩm</Link>
                     </li>
                     <li>
-                        <button onClick={handleLogout}>Logout</button>
+                        <button onClick={handleLogout}>Xin chào: {userInfo?.userName} Logout</button>
                     </li>
                 </ul>
             </nav>
