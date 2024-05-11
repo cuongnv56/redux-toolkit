@@ -9,7 +9,7 @@ import { persistReducer } from 'redux-persist'
 const persistRootConfig = {
     key: 'root',
     storage,
-    whitelist: ['about', 'product']
+    blacklist: ['user', 'product2']
 }
 
 const userConfig = {
@@ -18,22 +18,16 @@ const userConfig = {
     blacklist: ['userName']
 }
 
-const persistedReducer = persistReducer(persistRootConfig, combineReducers({
+const rootReducer = combineReducers({
     user: persistReducer(userConfig, userReducer),
     about: aboutReducer,
     product: productReducer,
     product2: product2Reducer,
-}))
+});
+  
+export default persistReducer(persistRootConfig, rootReducer);
 
-const rootReducer = combineReducers({
-    // user: persistReducer(userConfig, userReducer),
-    root: persistedReducer,
-    // about: aboutReducer,
-    // product: productReducer,
-    // product2: product2Reducer,
-})
-
-export default rootReducer
+// export default rootReducer
 
 // export default persistReducer(persistConfig, rootReducer)
 

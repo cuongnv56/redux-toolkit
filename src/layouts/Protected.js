@@ -5,7 +5,7 @@ import { logout } from "../userSlice";
 export function ProtectedLayout() {
     const location = useLocation();
     const dispatch = useDispatch()
-    const userInfo = useSelector((state) => state?.root?.user)
+    const userInfo = useSelector((state) => state?.user)
     const isLogged = userInfo?.isLogged
     
     const handleLogout = () => {

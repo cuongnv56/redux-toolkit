@@ -11,7 +11,7 @@ export async function loader() {
 export function Component(props) {
   let data = useLoaderData()
   const dispatch = useDispatch()
-  const isLogged = useSelector((state) => state?.root?.user?.isLogged)
+  const isLogged = useSelector((state) => state?.user?.isLogged)
 
   const navigate = useNavigate();
 
