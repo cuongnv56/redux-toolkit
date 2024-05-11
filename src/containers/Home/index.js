@@ -14,10 +14,6 @@ export function Home() {
   const products = useSelector((state) => state?.product?.products)
   const products2 = useSelector((state) => state?.product2Reducer?.products2)
   const dispatch = useDispatch()
-
-  console.log('CCCCCCCCCCCCCCCCCCCCCC')
-  console.log(products)
-  console.log(products2)
   
   const callApiForSaga = () => {
     dispatch(getProducts())

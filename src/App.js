@@ -111,6 +111,10 @@ const router = createBrowserRouter([
         path: "product-management",
         lazy: () => import("./containers/Product/components/ProductManagement"),
       },
+      {
+        path: "logout",
+        lazy: () => import("./containers/Product/components/ProductManagement"),
+      },
     ],
   },
 ]);

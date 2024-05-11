@@ -1,9 +1,15 @@
 import { Outlet, Link, useLocation, Navigate, useLoaderData, useFetcher, useRouteLoaderData } from "react-router-dom";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from "../userSlice";
 
 export function ProtectedLayout() {
     const location = useLocation();
-    const isLogged = useSelector((state) => state?.user?.isLogged)
+    const dispatch = useDispatch()
+    const isLogged = useSelector((state) => state?.isLogged)
+    
+    const handleLogout = () => {
+        dispatch(logout())
+    }
 
     return isLogged
     ? (
@@ -17,7 +23,7 @@ export function ProtectedLayout() {
                         <Link to="/admin/product-management">Quản lý sản phẩm</Link>
                     </li>
                     <li>
-                        <Link to="/admin/logout">Logout</Link>
+                        <button onClick={handleLogout}>Logout</button>
                     </li>
                 </ul>
             </nav>
