@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation, Navigate, useLoaderData, useFetcher, useRouteLoaderData } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from "../userSlice";
+import { api } from "../service/"
 
 export function ProtectedLayout() {
     const location = useLocation();
@@ -10,6 +11,7 @@ export function ProtectedLayout() {
     
     const handleLogout = () => {
         dispatch(logout())
+        api.users.login()
     }
 
     return isLogged
