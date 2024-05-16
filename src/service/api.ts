@@ -23,48 +23,36 @@ export interface GenericErrorModel {
     };
 }
 
-export interface ApiConfig<SecurityDataType = unknown> {
+export interface ApiConfig {
     baseUrl?: string;
     // baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
     // securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
     axiosCall?: typeof axios;
 }
 
-export class HttpClient<SecurityDataType = unknown> {
-    public baseUrl: string = "https://api.realworld.io/api"
-    private axiosCall = (path: string, config: AxiosRequestConfig<any>) => axios(path, config);
+export class HttpClient<AxiosRequestConfig> {
+    private _baseUrl: string = "https://api.realworld.io/api"
+    private axiosCall = (config: AxiosRequestConfig) => axios.request(config);
 
-    constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
+    constructor(apiConfig: AxiosRequestConfig) {
         Object.assign(this, apiConfig);
     }
 
-    public request = async <T = any, E = any>({
-        // body,
-        // secure,
-        // path,
-        // type,
-        // query,
-        // format,
+    public request = async <T = any, R = AxiosResponse<T>>({
+        method,
+        path,
         baseUrl,
-        // cancelToken,
-        config,
-        // ...params
-      }: any): Promise<AxiosResponse<any, any>> => {
-        // const secureParams =
-        //   ((typeof secure === "boolean" ? secure : this.baseApiParams.secure) &&
-        //     this.securityWorker &&
-        //     (await this.securityWorker(this.securityData))) ||
-        //   {};
-        // const requestParams = this.mergeRequestParams(params, secureParams);
-        // const queryString = query && this.toQueryString(query);
-        // const payloadFormatter = this.contentFormatters[type || ContentType.Json];
-        // const responseFormat = format || requestParams.format;
-    
-        return this.axiosCall(`${baseUrl || this.baseUrl || ""}${path}}`, config)
+        url
+    }: any): Promise<AxiosResponse> => {
+        const config: AxiosRequestConfig = {
+            method: method,
+            url: `${baseUrl}${path}`,
+        }
+        return this.axiosCall(config)
     }
 }
 
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+export class Api extends HttpClient<AxiosRequestConfig> {
     users = {
         login: (
             data: {
@@ -74,12 +62,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             this.request<
                 {
                     user: User,
-                },
-                GenericErrorModel
+                }
             >({
-                path: `/users/login`,
-                method: "POST",
-                body: data,
+                url: `/users/login`,
+                method: "POST"
             })
         }
     }
