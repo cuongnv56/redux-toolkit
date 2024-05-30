@@ -1,5 +1,29 @@
 {
-    "compilerOptions": {
-      "baseUrl": "src"
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "noImplicitAny": false,
+    "paths": {
+      "src/*": ["./src/*"]
     }
+  },
+  "include": [
+    "src",
+    "image.d.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "./typings/*.ts"
+  ],
 }
