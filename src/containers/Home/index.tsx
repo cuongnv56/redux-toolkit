@@ -5,7 +5,7 @@ import { saveProducts, getProducts } from '../../productSlice'
 import { saveProducts2 } from '../../product2Slice'
 import axios from 'axios';
 import { api } from '../../service'
-import { UserObj } from "../../service/api"
+import { ResponseStatus, UserObj } from "../../service/api"
 
 export async function loader() {
   await new Promise((r) => setTimeout(r, 500));
@@ -25,8 +25,13 @@ export function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data, responseStatus } = await api.products.fetch()
+        const response = await api.products.fetch()
+        const { data } : {data: UserObj} = response
+        // const { responseStatus } : {responseStatus: ResponseStatus} = response
+
+        // const { data , responseStatus } = await api.products.fetch()
         console.log('NNNNNNNNNNNNNN ', data)
+        // console.log('NNNNNNNNNNNNNN 22 ', responseStatus)
       } catch (e) {
 
       }
